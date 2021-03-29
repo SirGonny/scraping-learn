@@ -19,19 +19,29 @@ for item in items:
     continue
 
   name = item.find("div", attrs={"class":"name"}).get_text()
+ 
+  if "Apple" in name:
+      print("애플제외")
+      continue
+
   price = item.find("strong", attrs={"class":"price-value"}).get_text()
 
+# review 100 / point 4.5
   rate = item.find("em", attrs={"class":"rating"})
   rate_cnt = item.find("span", attrs={"class":"rating-total-count"})
   
   if rate:
     rate = rate.get_text()
   else:
-    rate = "평점x"
+    print("평점x")
+    continue
   
   if rate_cnt:
     rate_cnt = rate_cnt.get_text()
+    rate_cnt = rate_cnt[1:-1]
   else:
-    rate_cnt = "평점수x"
+    print("평점수x")
+    continue
 
-  print(name, price, rate, rate_cnt)
+  if float(rate) >= 4.5 and int(rate_cnt) >= 100:
+    print(name, price, rate, rate_cnt)

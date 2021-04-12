@@ -3,7 +3,11 @@ import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
-browser = webdriver.Chrome()
+options = webdriver.ChromeOptions()
+options.headless = True
+options.add_argument("window-size=1920x1080")
+
+browser = webdriver.Chrome(options=options)
 browser.maximize_window()
 
 url = "https://play.google.com/store/movies/top"
@@ -27,6 +31,8 @@ while True:
 
 print("완료")
 
+browser.get_screenshot_as_file("google_movie.png")
+
 soup = BeautifulSoup(browser.page_source, "lxml")
 
 movies = soup.find_all("div", attrs={"class":"Vpfmgd"})
@@ -45,11 +51,11 @@ for movie in movies :
   price = movie.find("span", attrs={"class":"VfPpfd ZdBevf i5DZme"}).get_text()
 
   link = movie.find("a", attrs={"class":"JC71ub"})["href"]
-  # https://play.google.com
 
-  print(f"제목:{title}")
-  print(f"할인전:{original_price}")
-  print(f"제목:{price}")
-  print("링크 : https://play.google.com"+link)
+  # print(f"제목:{title}")
+  # print(f"할인전:{original_price}")
+  # print(f"제목:{price}")
+  # print("링크 : https://play.google.com"+link)
+  # print("--------------------------")
 
   browser.quit()
